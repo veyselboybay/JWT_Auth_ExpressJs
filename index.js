@@ -1,7 +1,9 @@
 const express = require('express')
 const authRoute = require('./routes/auth');
+const postRoute = require('./routes/posts');
 const mongoose = require('mongoose')
 require('dotenv/config')
+const verifyUser = require('./verifyToken');
 
 // Create express app
 const app = express()
@@ -10,8 +12,13 @@ const app = express()
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 
+//Middleware to verify user token
+
+app.use('/api/posts',verifyUser);
+
 // Middleware for routes
 app.use('/api/user',authRoute);
+app.use('/api/posts',postRoute);
 
 
 
